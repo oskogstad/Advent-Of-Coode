@@ -16,4 +16,7 @@ foreach (var line in input)
     calorieCountCurrentElf += num;
 }
 
-Console.WriteLine(caloriesPerElf.OrderDescending().First());
+var sorted = caloriesPerElf.OrderDescending().ToList();
+
+Console.WriteLine($"01: Most calories - {sorted.First()}");
+Console.WriteLine($"02: Top three - {sorted.Take(3).Sum()}");
