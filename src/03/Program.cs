@@ -20,3 +20,19 @@ foreach (var rucksack in rucksacks)
 }
 
 Console.WriteLine($"Priority sum: {prioritySum}");
+
+var groupPrioritySum = 0;
+const int groupSize = 3;
+for (var i = 0; i < rucksacks.Length / groupSize; ++i)
+{
+    var group = rucksacks.Skip(groupSize * i).Take(groupSize).ToList();
+    var commonItem = group[0].Intersect(group[1]).Intersect(group[2]).Single();
+    
+    var priorityScore = char.IsLower(commonItem)
+        ? LowerCaseBase(commonItem)
+        : UppercaseScore(commonItem);
+
+    groupPrioritySum += priorityScore;
+}
+
+Console.WriteLine($"Group priority sum: {groupPrioritySum}");
