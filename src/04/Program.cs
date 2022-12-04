@@ -9,15 +9,15 @@ var sectionAssignments = sectionAssignmentsInput
             .ToList())
     .ToList();
 
-bool HasTotalOverLap(IReadOnlyList<int> sections) =>
-    (sections[0] >= sections[2] && sections[1] <= sections[3]) ||
-    (sections[0] <= sections[2] && sections[1] >= sections[3]);
+bool HasTotalOverLap(int minA, int maxA, int minB, int maxB) =>
+    (minA >= minB && maxA <= maxB) || (minA <= minB && maxA >= maxB);
 
-var numberOfTotalOverlaps = sectionAssignments.Count(HasTotalOverLap);
+var numberOfTotalOverlaps = sectionAssignments.Count(section => 
+    HasTotalOverLap(section[0], section[1], section[2], section[3]));
 Console.WriteLine($"Number of total overlaps: {numberOfTotalOverlaps}");
 
-bool HasPartialOverLap(IReadOnlyList<int> sections) => 
-    !(sections[1] < sections[2] || sections[0] > sections[3]);
+bool HasPartialOverLap(int minA, int maxA, int minB, int maxB) => !(maxA < minB || minA > maxB);
 
-var numberOfOverlaps = sectionAssignments.Count(HasPartialOverLap);
+var numberOfOverlaps = sectionAssignments.Count(section => 
+    HasPartialOverLap(section[0], section[1], section[2], section[3]));
 Console.WriteLine($"Number of overlaps: {numberOfOverlaps}");
