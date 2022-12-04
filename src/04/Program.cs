@@ -16,13 +16,8 @@ bool HasTotalOverLap(IReadOnlyList<int> sections) =>
 var numberOfTotalOverlaps = sectionAssignments.Count(HasTotalOverLap);
 Console.WriteLine($"Number of total overlaps: {numberOfTotalOverlaps}");
 
-bool IsInRange(int num, int start, int end) => num >= start && num <= end;
-
-bool HasPartialOverLap(IReadOnlyList<int> sections) =>
-    IsInRange(sections[0], sections[2], sections[3]) ||
-    IsInRange(sections[1], sections[2], sections[3]) ||
-    IsInRange(sections[2], sections[0], sections[1]) ||
-    IsInRange(sections[3], sections[0], sections[1]);
+bool HasPartialOverLap(IReadOnlyList<int> sections) => 
+    !(sections[1] < sections[2] || sections[0] > sections[3]);
 
 var numberOfOverlaps = sectionAssignments.Count(HasPartialOverLap);
 Console.WriteLine($"Number of overlaps: {numberOfOverlaps}");
