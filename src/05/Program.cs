@@ -30,6 +30,12 @@ foreach (var crateLine in crateLines[1..])
     }
 }
 
+var containerStacksPartTwo = new Stack<char>[containerStacks.Count];
+for (var i = 0; i < containerStacks.Count; i++)
+{
+    containerStacksPartTwo[i] = new Stack<char>(containerStacks[i].Reverse());
+}
+
 foreach (var move in moveList)
 {
     var moveNumbers = Regex
@@ -42,13 +48,31 @@ foreach (var move in moveList)
     var sourceIndex = moveNumbers[1] - 1;
     var targetIndex = moveNumbers.Last() - 1;
 
+    var partTwoCurrentMoveList = new Stack<char>();
     for (var i = 0; i < howMany; i++)
     {
         var item = containerStacks[sourceIndex].Pop();
         containerStacks[targetIndex].Push(item);
+
+        var partTwoItem = containerStacksPartTwo[sourceIndex].Pop();
+        partTwoCurrentMoveList.Push(partTwoItem);
     }
+
+    while (partTwoCurrentMoveList.Any())
+        containerStacksPartTwo[targetIndex].Push(partTwoCurrentMoveList.Pop());
 }
 
-foreach(var containerStack in containerStacks) {
+
+Console.WriteLine($"05 Part one: ");
+foreach (var containerStack in containerStacks)
+{
+    Console.Write(containerStack.Pop());
+}
+
+Console.WriteLine();
+
+Console.WriteLine($"05 Part two: ");
+foreach (var containerStack in containerStacksPartTwo)
+{
     Console.Write(containerStack.Pop());
 }
