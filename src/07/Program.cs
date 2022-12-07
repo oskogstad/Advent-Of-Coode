@@ -43,7 +43,9 @@ foreach (var line in consoleLog)
     else
     {
         fileSystem.TryGetValue(currentPath, out var folder);
-        folder!.TotalFileSize += int.Parse(split[0]);
+        var fileSize = int.Parse(split[0]);
+        folder!.FileSizes.Add(fileSize);
+        folder.TotalFileSize += fileSize;
     }
 }
 
@@ -51,18 +53,31 @@ var folderSizes = fileSystem
     .Select(kvp => GetTotalFileSize(kvp.Value)).ToList();
     
 var sumOfFoldersUpToOneHundredK = folderSizes
-    .Where(folderSize => folderSize <= 100000)
+    .Where(folderSize => folderSize <= 100_000)
     .Sum();
 
 Console.WriteLine($"07  Part one: {sumOfFoldersUpToOneHundredK}");
 
+var currentDiskUsage = fileSystem.SelectMany(kvp => kvp.Value.FileSizes).Sum();
+
+const int totalDiskSpace = 70_000_000;
+const int desiredFreeSpace = 30_000_000;
+var currentFreeSpace = totalDiskSpace - currentDiskUsage;
+
+var smallestFolderThatSatisfiesCriteria = folderSizes
+    .Order()
+    .ToList()
+    .First(folderSize => currentFreeSpace + folderSize >= desiredFreeSpace);
+
+Console.WriteLine($"07 Part two: {smallestFolderThatSatisfiesCriteria}");
+
 void TryAddFolderToFileSystem(string path) => 
-    fileSystem?.TryAdd(path, new Folder(new List<string>()));
+    fileSystem?.TryAdd(path, new Folder(new List<string>(), new List<int>()));
 
 int GetTotalFileSize(Folder folder) =>
     folder.TotalFileSize + folder.Folders.Sum(path => GetTotalFileSize(fileSystem[path]));
 
-record Folder(List<string> Folders)
+record Folder(List<string> Folders, List<int> FileSizes)
 {
     public int TotalFileSize { get; set; }
 }
