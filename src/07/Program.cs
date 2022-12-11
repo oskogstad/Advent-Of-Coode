@@ -1,4 +1,4 @@
-﻿var consoleLog = System.IO.File.ReadAllLines("./console_log");
+﻿var consoleLog = File.ReadAllLines("./console_log");
 
 var fileSystem = new Dictionary<string, Folder>();
 var currentPath = "";
