@@ -47,44 +47,14 @@ void MoveTail()
 {
     var diffX = head.X - tail.X;
     var diffY = head.Y - tail.Y;
-
+    
     var absX = Math.Abs(diffX);
     var absY = Math.Abs(diffY);
 
-    if (absX < 2 && absY < 2)
-        return;
-
-    if (absY > 1)
+    if (absX > 1 || absY > 1)
     {
-        if (diffY > 0)
-            tail.Y++;
-        else
-            tail.Y--;
-
-        if (absX != 1) 
-            return;
-        
-        if (diffX > 0)
-            tail.X++;
-        else
-            tail.X--;
-        return;
-    }
-
-    if (absX > 1)
-    {
-        if (diffX > 0)
-            tail.X++;
-        else
-            tail.X--;
-
-        if (absY != 1) 
-            return;
-        
-        if (diffY > 0)
-            tail.Y++;
-        else
-            tail.Y--;
+        tail.Y += Math.Sign(diffY);
+        tail.X += Math.Sign(diffX);
     }
 }
 
